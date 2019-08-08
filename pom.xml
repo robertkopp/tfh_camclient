@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>dev.robertkopp</groupId>
+    <artifactId>autoCamClient</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <jackson-2-version>2.6.3</jackson-2-version>
+    </properties>
+     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <createDependencyReducedPom>true</createDependencyReducedPom>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>dev.robertkopp.autocamclient.CamRunner</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+          <id>central</id>
+          <url>https://repo1.maven.org/maven2</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </repository>
+        <repository>
+    <id>Sonatype OSS Snapshot Repository</id>
+    <name>MyCoolRepo</name>
+    <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+      <snapshots>
+       <enabled>true</enabled>
+   </snapshots>
+</repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+	<groupId>com.nativelibs4java</groupId>
+	<artifactId>bridj</artifactId>
+	<version>0.7.0</version>
+</dependency>
+
+        <!-- the core, which includes Streaming API, shared low-level abstractions (but NOT data-binding) -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-2-version}</version>
+        </dependency>
+
+        <!-- Just the annotations; use this dependency if you want to attach annotations
+        to classes without connecting them to the code. -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-2-version}</version>
+        </dependency>
+
+        <!-- databinding; ObjectMapper, JsonNode and related classes are here -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-2-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId> <!-- Use 'netty-all' for 4.0 or above -->
+            <version>4.0.32.Final</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.sarxos</groupId>
+            <artifactId>webcam-capture</artifactId>
+            <version>0.3.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.1</version>
+        </dependency>
+        <dependency>
+	<groupId>org.apache.httpcomponents</groupId>
+	<artifactId>httpmime</artifactId>
+	<version>4.5.1</version>
+</dependency>
+
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+<!--        <dependency>
+  <groupId>com.github.sarxos</groupId>
+  <artifactId>webcam-capture-driver-v4l4j</artifactId>
+  <version>0.3.11</version>
+</dependency>
+<dependency>
+    <groupId>com.github.sarxos</groupId>
+    <artifactId>v4l4j</artifactId>
+    <version>0.9.1-r507</version>
+</dependency>-->
+    </dependencies>
+</project>
